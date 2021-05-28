@@ -18,6 +18,7 @@ deleteButton.addEventListener('click', function() {
 
 number.forEach(number => {
     number.addEventListener('click', function() {
+        if (Number.isNaN(Number(previousOperand.innerHTML))  === false) previousOperand.innerHTML = ""
         if(number.innerHTML === "." && currentOperand.innerHTML.toString().includes('.')) return
         currentOperand.innerHTML = currentOperand.innerHTML.toString() + number.innerHTML.toString();
     })
@@ -26,7 +27,12 @@ number.forEach(number => {
 operation.forEach(operation => {
     operation.addEventListener('click', function() {
         operand = operation.innerHTML;
-        previousOperand.innerHTML = currentOperand.innerHTML.toString() + " " + operand;
+        if (currentOperand.innerHTML === "" && previousOperand.innerHTML !== "") {
+            console.log(previousOperand.innerHTML)
+            previousOperand.innerHTML = previousOperand.innerHTML.toString().slice(0, -1) + operand;
+        }else {
+            previousOperand.innerHTML = currentOperand.innerHTML.toString() + " " + operand;
+        }
         currentOperand.innerHTML = "";
     } )
 })
@@ -34,17 +40,17 @@ operation.forEach(operation => {
 equalTo.addEventListener('click', function() {
     if (currentOperand.innerHTML === "") return
     if(operand === "÷") {
-        currentOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) / 
+        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) / 
         Number.parseFloat(currentOperand.innerHTML);
     } else if(operand === "*") {
-        currentOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) * 
+        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) * 
         Number.parseFloat(currentOperand.innerHTML);
     } else if(operand === "+") {
-        currentOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) + 
+        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) + 
         Number.parseFloat(currentOperand.innerHTML);
     } else if(operand === "-") {
-        currentOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) - 
+        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) - 
         Number.parseFloat(currentOperand.innerHTML);
     }
-    previousOperand.innerHTML = "";
+    currentOperand.innerHTML = "";
 })
