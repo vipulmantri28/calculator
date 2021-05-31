@@ -8,49 +8,48 @@ const currentOperand = document.querySelector('.current-operand');
 let operand = undefined;
 
 allClear.addEventListener('click', function() {
-    previousOperand.innerHTML = "";
-    currentOperand.innerHTML = "";
+    previousOperand.textContent = "";
+    currentOperand.textContent = "";
 })
 
 deleteButton.addEventListener('click', function() {
-    currentOperand.innerHTML = currentOperand.innerHTML.toString().slice(0, -1);
+    currentOperand.innerHTML = currentOperand.textContent.toString().slice(0, -1);
 })
 
 number.forEach(number => {
     number.addEventListener('click', function() {
-        if (Number.isNaN(Number(previousOperand.innerHTML))  === false) previousOperand.innerHTML = ""
-        if(number.innerHTML === "." && currentOperand.innerHTML.toString().includes('.')) return
-        currentOperand.innerHTML = currentOperand.innerHTML.toString() + number.innerHTML.toString();
+        if (Number.isNaN(Number(previousOperand.textContent))  === false) previousOperand.textContent = ""
+        if(number.textContent === "." && currentOperand.textContent.toString().includes('.')) return
+        currentOperand.textContent = currentOperand.textContent.toString() + number.textContent.toString();
     })
 })
 
 operation.forEach(operation => {
     operation.addEventListener('click', function() {
-        operand = operation.innerHTML;
-        if (currentOperand.innerHTML === "" && previousOperand.innerHTML !== "") {
-            console.log(previousOperand.innerHTML)
-            previousOperand.innerHTML = previousOperand.innerHTML.toString().slice(0, -1) + operand;
+        operand = operation.textContent;
+        if (currentOperand.textContent === "" && previousOperand.textContent !== "") {
+            previousOperand.textContent = previousOperand.textContent.toString().slice(0, -1) + operand;
         }else {
-            previousOperand.innerHTML = currentOperand.innerHTML.toString() + " " + operand;
+            previousOperand.textContent = currentOperand.textContent.toString() + " " + operand;
         }
-        currentOperand.innerHTML = "";
+        currentOperand.textContent = "";
     } )
 })
 
 equalTo.addEventListener('click', function() {
-    if (currentOperand.innerHTML === "") return
+    if (currentOperand.textContent === "" || currentOperand.textContent === ".") return
     if(operand === "÷") {
-        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) / 
-        Number.parseFloat(currentOperand.innerHTML);
+        previousOperand.textContent = Number.parseFloat(previousOperand.textContent.toString().slice(0, -2)) / 
+        Number.parseFloat(currentOperand.textContent);
     } else if(operand === "*") {
-        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) * 
-        Number.parseFloat(currentOperand.innerHTML);
+        previousOperand.textContent = Number.parseFloat(previousOperand.textContent.toString().slice(0, -2)) * 
+        Number.parseFloat(currentOperand.textContent);
     } else if(operand === "+") {
-        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) + 
-        Number.parseFloat(currentOperand.innerHTML);
+        previousOperand.textContent = Number.parseFloat(previousOperand.textContent.toString().slice(0, -2)) + 
+        Number.parseFloat(currentOperand.textContent);
     } else if(operand === "-") {
-        previousOperand.innerHTML = Number.parseFloat(previousOperand.innerHTML.toString().slice(0, -2)) - 
-        Number.parseFloat(currentOperand.innerHTML);
+        previousOperand.textContent = Number.parseFloat(previousOperand.textContent.toString().slice(0, -2)) - 
+        Number.parseFloat(currentOperand.textContent);
     }
-    currentOperand.innerHTML = "";
+    currentOperand.textContent = "";
 })
