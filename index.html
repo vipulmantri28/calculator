@@ -62,10 +62,11 @@
                 operand = target.textContent;
                 if (currentOperand.textContent === "" && isNaN(Number(previousOperand.textContent)) === true) {
                     previousOperand.textContent = previousOperand.textContent.toString().slice(0, -1) + target.textContent;
+                }else {
+                    previousOperand.textContent = currentOperand.textContent + " " + target.textContent;
+                    currentOperand.textContent = "";
                 }
                 
-                previousOperand.textContent = currentOperand.textContent + " " + target.textContent;
-                currentOperand.textContent = "";
 
             }else if (target.className.includes('equal-to')) {
                 let logItem = document.createElement('li');
