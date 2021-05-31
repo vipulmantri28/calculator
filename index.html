@@ -8,29 +8,94 @@
 </head>
 <body>
     <div class="calculator">
-        <div class="output">
-            <div class="previous-operand"></div>
-            <div class="current-operand"></div>
+        <div class="log"></div>
+        <div class="calculator__wrapper" onclick="calculator(event.target)">
+            <div class="output">
+                <div class="previous-operand"></div>
+                <div class="current-operand"></div>
+            </div>
+            <button class="log-button">Log</button>
+            <button class="all-clear">AC</button>
+            <button class="delete">DEL</button>
+            <button class="operation">÷</button>
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button class="operation">*</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button class="operation">-</button>
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="operation">+</button>
+            <button class="number">.</button>
+            <button class="number">0</button>
+            <button class="span-two equal-to">=</button>
         </div>
-        <button class="span-two all-clear">AC</button>
-        <button class="delete">DEL</button>
-        <button class="operation">÷</button>
-        <button class="number">1</button>
-        <button class="number">2</button>
-        <button class="number">3</button>
-        <button class="operation">*</button>
-        <button class="number">4</button>
-        <button class="number">5</button>
-        <button class="number">6</button>
-        <button class="operation">-</button>
-        <button class="number">7</button>
-        <button class="number">8</button>
-        <button class="number">9</button>
-        <button class="operation">+</button>
-        <button class="number">.</button>
-        <button class="number">0</button>
-        <button class="span-two equal-to">=</button>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        let operand = undefined;
+        let log = document.querySelector(".log");
+        let logList = document.createElement('ul');
+        log.appendChild(logList);
+        function calculator(target) {
+            
+            let currentOperand = document.querySelector('.current-operand');
+            let previousOperand = document.querySelector('.previous-operand');
+            
+            if (target.className === "output") {
+                return;
+            }else if (target.className.includes("all-clear")) {
+                currentOperand.textContent = "";
+                previousOperand.textContent = "";
+            }else if(target.className === "delete") {
+                currentOperand.textContent = currentOperand.textContent.toString().slice(0, -1);
+            }else if (target.className === "number") {
+                if (target.textContent === "." && currentOperand.textContent.toString().includes(".")) return;
+                if (isNaN(Number(previousOperand.textContent)) === false) previousOperand.textContent = "";
+                currentOperand.textContent += target.textContent;
+            }else if (target.className === "operation") {
+                if (currentOperand.textContent === ".") return;
+                operand = target.textContent;
+                if (currentOperand.textContent === "" && isNaN(Number(previousOperand.textContent)) === true) {
+                    previousOperand.textContent = previousOperand.textContent.toString().slice(0, -1) + target.textContent;
+                }
+                
+                previousOperand.textContent = currentOperand.textContent + " " + target.textContent;
+                currentOperand.textContent = "";
+
+            }else if (target.className.includes('equal-to')) {
+                let logItem = document.createElement('li');
+                if (currentOperand.textContent === "" || currentOperand.textContent === ".") return;
+
+                logItem.textContent = previousOperand.textContent + " " + currentOperand.textContent;
+
+                if (operand === "÷") {
+                    previousOperand.textContent = Number.parseFloat(Number(previousOperand.textContent.toString().slice(0, -2)) / Number(currentOperand.textContent));
+                }else if (operand === "*") {
+                    previousOperand.textContent = Number.parseFloat(Number(previousOperand.textContent.toString().slice(0, -2)) * Number(currentOperand.textContent));
+                }else if ( operand === "+") {
+                    previousOperand.textContent = Number.parseFloat(Number(previousOperand.textContent.toString().slice(0, -2)) + Number(currentOperand.textContent));
+                }else if (operand === "-") {
+                    previousOperand.textContent = Number.parseFloat(Number(previousOperand.textContent.toString().slice(0, -2)) - Number(currentOperand.textContent));
+                }
+
+                logItem.textContent += " = " + previousOperand.textContent;
+
+                logList.appendChild(logItem);
+                currentOperand.textContent = "";
+            }else if (target.className === "log-button") {
+                if (log.classList.contains("isShown")) {
+                    log.classList.remove("isShown")
+                }else {
+                    log.classList.add("isShown")
+                }
+            }
+        }
+
+    </script>
 </body>
 </html>
